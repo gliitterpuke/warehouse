@@ -24,17 +24,29 @@ df['DLat'] = [g.latitude for g in df.dcode]
 df['DLong'] = [g.longitude for g in df.dcode]
 df['DCoord'] = df['DLat'].astype(str) + ',' + df['DLong'].astype(str)
 
-df = df[['Vendor#', 'Province / State', 'Address 1', 'Postal / Zip Code', 'Direct to store Dest', 'Province', 'OLat', 'OLong', 'OCoord', 'MAILING ADDRESS', 'Postal', 'DLat', 'DLong', 'DCoord', 'Copy & Paste the link in browser', 'ocode', 'dcode']]
-
-list = []
+durList = []
 actual_duration = []
+
+distList = []
+actual_distance = []
+
 result = gmaps.distance_matrix(df['OCoord'], df['DCoord'], mode='driving')['rows'][0]
 # print(result)
 for elements in result['elements']:
-    calc = elements.get('duration').get('value')
-    list.append(calc)
-    calc = calc/3600
-    actual_duration.append(calc)
+    dur = elements.get('duration').get('value')
+    dist = elements.get('distance').get('value')
 
-df['duration (Hours)'] = actual_duration
-print(df["duration (Hours)"])
+    durList.append(dur)
+    distList.append(dist)
+
+    dur = dur/3600
+    dist = dist/1000
+
+    actual_duration.append(dur)
+    actual_distance.append(dist)
+
+df['Duration (Hours)'] = actual_duration
+df['Distance (KM)'] = actual_distance
+
+df = df[['Vendor#', 'Province / State', 'Address 1', 'Postal / Zip Code', 'Direct to store Dest', 'Province', 'OLat', 'OLong', 'OCoord', 'MAILING ADDRESS', 'Postal', 'DLat', 'DLong', 'DCoord', 'Copy & Paste the link in browser', 'ocode', 'dcode', 'Duration (Hours)', 'Distance (KM)']]
+print(df)
