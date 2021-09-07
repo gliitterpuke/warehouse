@@ -59,4 +59,6 @@ df['Distance (KM)'] = actual_distance
 
 # rearrange columns
 df = df[['Vendor#', 'Province / State', 'Address 1', 'Postal / Zip Code', 'Direct to store Dest', 'Province', 'OLat', 'OLong', 'OCoord', 'MAILING ADDRESS', 'Postal', 'DLat', 'DLong', 'DCoord', 'Copy & Paste the link in browser', 'ocode', 'dcode', 'Duration (Hours)', 'Distance (KM)']]
-print(df)
+
+# save to csv
+df.to_csv('Warehouse.csv')
