@@ -20,10 +20,8 @@ df = df.iloc[:-6630]
 og = df['Postal / Zip Code'].astype(str)
 dest = df['Postal'].astype(str).replace('nan', -1)
 
-# df['ocode'] = og.apply(geolocator.geocode)
-# df['OLat'] = [g.latitude for g in df.ocode]
-# df['OLong'] = [g.longitude for g in df.ocode]
-# df['OCoord'] = df['OLat'].astype(str) + ',' + df['OLong'].astype(str)
+df['ocode'] = og.apply(geolocator.geocode)
+
 olat = []
 olong = []
 
@@ -37,13 +35,17 @@ for i in df.ocode:
         olat.append("")
         olat.append("")
         pass
+    
 df['OLat'] = olat
 df['OLong'] = olong
+df['OCoord'] = df['OLat'].astype(str) + ',' + df['OLong'].astype(str)
 
-# df['dcode'] = dest.apply(geolocator.geocode)
+# df['OLat'] = [g.latitude for g in df.ocode]
+# df['OLong'] = [g.longitude for g in df.ocode]
+
+df['dcode'] = dest.apply(geolocator.geocode)
 # df['DLat'] = [g.latitude for g in df.dcode]
 # df['DLong'] = [g.longitude for g in df.dcode]
-# df['DCoord'] = df['DLat'].astype(str) + ',' + df['DLong'].astype(str)
 
 dlat=[]
 dlong=[]
@@ -60,6 +62,7 @@ for i in df.dcode:
         pass
 df['DLat'] = dlat
 df['DLong'] = dlong
+df['DCoord'] = df['DLat'].astype(str) + ',' + df['DLong'].astype(str)
 
 # find duration/distance between origin/destination
 durList = []
