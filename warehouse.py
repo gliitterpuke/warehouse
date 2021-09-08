@@ -18,17 +18,48 @@ df = df.iloc[:-6630]
 
 # create origin/destination latitude/longitude and full geocode columns
 og = df['Postal / Zip Code'].astype(str)
-dest = df['Postal'].astype(str)
+dest = df['Postal'].astype(str).replace('nan', -1)
 
-df['ocode'] = og.apply(geolocator.geocode)
-df['OLat'] = [g.latitude for g in df.ocode]
-df['OLong'] = [g.longitude for g in df.ocode]
-df['OCoord'] = df['OLat'].astype(str) + ',' + df['OLong'].astype(str)
+# df['ocode'] = og.apply(geolocator.geocode)
+# df['OLat'] = [g.latitude for g in df.ocode]
+# df['OLong'] = [g.longitude for g in df.ocode]
+# df['OCoord'] = df['OLat'].astype(str) + ',' + df['OLong'].astype(str)
+olat = []
+olong = []
 
-df['dcode'] = dest.apply(geolocator.geocode)
-df['DLat'] = [g.latitude for g in df.dcode]
-df['DLong'] = [g.longitude for g in df.dcode]
-df['DCoord'] = df['DLat'].astype(str) + ',' + df['DLong'].astype(str)
+for i in df.ocode:
+    try:
+        lat = i.latitude
+        long = i.longitude
+        olat.append(lat)
+        olong.append(long)
+    except:
+        olat.append("")
+        olat.append("")
+        pass
+df['OLat'] = olat
+df['OLong'] = olong
+
+# df['dcode'] = dest.apply(geolocator.geocode)
+# df['DLat'] = [g.latitude for g in df.dcode]
+# df['DLong'] = [g.longitude for g in df.dcode]
+# df['DCoord'] = df['DLat'].astype(str) + ',' + df['DLong'].astype(str)
+
+dlat=[]
+dlong=[]
+
+for i in df.dcode:
+    try:
+        lat = i.latitude
+        long = i.longitude
+        dlat.append(lat)
+        dlong.append(long)
+    except:
+        dlat.append("")
+        dlong.append("")
+        pass
+df['DLat'] = dlat
+df['DLong'] = dlong
 
 # find duration/distance between origin/destination
 durList = []
