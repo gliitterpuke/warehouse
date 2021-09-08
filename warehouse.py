@@ -16,9 +16,9 @@ df = pd.read_csv('Direct to Store list_v1.csv')
 # for testing purposes, remove 6630 lines
 df = df.iloc[:-6630]
 
-# create origin/destination latitude/longitude and full coordinate columns
-og = df['Address 1'].astype(str)
-dest = df['MAILING ADDRESS'].astype(str)
+# create origin/destination latitude/longitude and full geocode columns
+og = df['Postal / Zip Code'].astype(str)
+dest = df['Postal'].astype(str)
 
 df['ocode'] = og.apply(geolocator.geocode)
 df['OLat'] = [g.latitude for g in df.ocode]
